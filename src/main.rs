@@ -41,6 +41,43 @@ fn y19_d01_p2() -> i32 {
         .sum()
 }
 
+fn y19_d02_p1() -> usize {
+    let mut memory = fs::read_to_string("./static/2019_2_input.txt")
+        .expect("Could not read file")
+        .trim()
+        .split(',')
+        .map(|s| s.parse::<usize>().expect("Could not parse to usize"))
+        .collect::<Vec<usize>>();
+
+    println!("{:?}", memory);
+
+    memory[1] = 12;
+    memory[2] = 2;
+
+    for x in 0..memory.len() {
+        let position = x * 4;
+        let operation = memory[position];
+        if operation == 99 {
+            break;
+        }
+        let a = memory[memory[position + 1]];
+        let b = memory[memory[position + 2]];
+        let position_final = memory[position + 3];
+        println!(
+            "before {}, {}, {}, {}",
+            operation, a, b, memory[position_final]
+        );
+        match operation {
+            1 => memory[position_final] = a + b,
+            2 => memory[position_final] = a * b,
+            _ => panic!("cenas"),
+        }
+        println!("after {}", memory[position_final]);
+    }
+
+    memory[0]
+}
+
 fn main() {
-    println!("{:?}", y19_d01_p2());
+    println!("{}", y19_d02_p1());
 }
