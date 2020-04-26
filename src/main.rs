@@ -41,18 +41,18 @@ fn y19_d01_p2() -> i32 {
         .sum()
 }
 
-fn y19_d02_p1() -> usize {
-    let mut memory = fs::read_to_string("./static/2019_2_input.txt")
-        .expect("Could not read file")
+fn create_memory() -> Vec<usize> {
+    fs::read_to_string("./static/2019_2_input.txt")
+        .expect("Could not read file.")
         .trim()
         .split(',')
-        .map(|s| s.parse::<usize>().expect("Could not parse to usize"))
-        .collect::<Vec<usize>>();
+        .map(|s| s.parse::<usize>().expect("Could not parse to usize."))
+        .collect::<Vec<usize>>()
+}
 
-    println!("{:?}", memory);
-
-    memory[1] = 12;
-    memory[2] = 2;
+fn intcode(memory: &mut Vec<usize>, noun: usize, verb: usize) -> usize {
+    memory[1] = noun;
+    memory[2] = verb;
 
     for x in 0..memory.len() {
         let position = x * 4;
@@ -63,21 +63,33 @@ fn y19_d02_p1() -> usize {
         let a = memory[memory[position + 1]];
         let b = memory[memory[position + 2]];
         let position_final = memory[position + 3];
-        println!(
-            "before {}, {}, {}, {}",
-            operation, a, b, memory[position_final]
-        );
         match operation {
             1 => memory[position_final] = a + b,
             2 => memory[position_final] = a * b,
-            _ => panic!("cenas"),
+            _ => panic!("Unknown operation."),
         }
-        println!("after {}", memory[position_final]);
     }
 
     memory[0]
 }
 
+fn y19_d02_p1() {
+    let mut memory = create_memory();
+    println!("{}", intcode(&mut memory, 12, 2));
+}
+
+fn y19_d02_p2() {
+    let memory = create_memory();
+    let expected = 19_690_720;
+    for noun in 1..100 {
+        for verb in 1..100 {
+            if intcode(&mut memory.clone(), noun, verb) == expected {
+                println!("{}", 100 * noun + verb);
+            }
+        }
+    }
+}
+
 fn main() {
-    println!("{}", y19_d02_p1());
+    y19_d02_p2();
 }
