@@ -2,7 +2,7 @@
 // - The value is within the range given in your puzzle input.
 fn is_password(value: &usize) -> bool {
     let n = value.clone();
-    let mut r = Digits::new(n).collect::<Vec<usize>>();
+    let mut r = to_digits(n);
     r.sort();
     if n != join_digits(&r) {
         // digits aren't ascending
@@ -18,28 +18,15 @@ fn is_password(value: &usize) -> bool {
     }
 }
 
-struct Digits {
-    value: usize,
-}
-
-impl Digits {
-    fn new(value: usize) -> Self {
-        Digits { value }
-    }
-}
-
-impl Iterator for Digits {
-    type Item = usize;
-    fn next(&mut self) -> Option<Self::Item> {
-        let base = 10usize;
-        if self.value != 0 {
-            let result = self.value % base;
-            self.value /= base;
-            Some(result)
-        } else {
-            None
-        }
-    }
+fn to_digits(n: usize) -> Vec<usize> {
+    vec![
+        (n / 100000) % 10,
+        (n / 10000) % 10,
+        (n / 1000) % 10,
+        (n / 100) % 10,
+        (n / 10) % 10,
+        (n / 1) % 10,
+    ]
 }
 
 fn join_digits(ns: &Vec<usize>) -> usize {
