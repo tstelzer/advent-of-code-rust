@@ -79,7 +79,7 @@ impl Wire {
 
 #[cfg(test)]
 mod tests {
-    use super::Wire;
+    use super::*;
 
     const WIRE_1A: &str = "R8,U5,L5,D3";
     const WIRE_1B: &str = "U7,R6,D4,L4";

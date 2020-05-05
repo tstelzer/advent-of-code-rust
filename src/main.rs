@@ -2,7 +2,8 @@
 mod y19d01;
 mod y19d02;
 mod y19d03;
+mod y19d04;
 
 fn main() {
-    y19d03::part2();
+    y19d04::part1();
 }
